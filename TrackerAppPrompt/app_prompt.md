@@ -1,0 +1,315 @@
+# Pixel-Perfect iOS Application — Full Technical & Architectural Prompt
+
+You are a **Senior iOS Engineer**.  
+Build a **SwiftUI iOS application** that exactly follows the provided **UI designs (.svg and .png)** and implements a **production-ready architecture**, navigation, and mocked data/services.
+
+This prompt is **self-contained** and must be followed strictly. The resulting app should be immediately usable as a foundation where mocked services can later be replaced with real implementations.
+
+---
+
+## 1. General Requirements
+
+### Platform & UI
+- iOS 17+
+- SwiftUI only
+- Pixel-perfect implementation based on provided `.svg` and `.png` designs
+- Match:
+  - layout
+  - spacing
+  - font sizes and weights
+  - colors
+  - corner radii
+  - shadows
+  - animations
+- Do NOT approximate UI — designs are the single source of truth
+
+### Output
+- Generate **Swift source files only**
+- Do NOT generate:
+  - `.xcodeproj`
+  - `.xcworkspace`
+  - `Package.swift`
+  - assets catalogs (assume assets are already provided)
+- Output format:
+  1. Folder hierarchy
+  2. Each Swift file with full content
+
+---
+
+## 2. Architectural Requirements (Strict)
+
+### Architecture
+- Clean Architecture
+- MVVM
+- Router-based navigation (no `NavigationLink`)
+- Feature-based modularization (one screen = one module)
+- Dependency Injection with builders/factories
+- All services must be **mock implementations**, swappable via protocols
+
+### Layering Rules
+
+- **Domain**
+  - Pure business logic
+  - Entities, UseCases, Repository protocols
+  - No SwiftUI, no networking, no persistence
+
+- **Data**
+  - Mock service implementations
+  - Repository implementations
+  - Simulated async behavior (`Task.sleep`)
+  - No UI code
+
+- **Presentation**
+  - SwiftUI Views
+  - ViewModels (`@MainActor`)
+  - Routers
+  - UI state models
+
+- **Core**
+  - DI container
+  - AppRouter
+  - Shared UI components
+  - Animations
+  - Utilities
+
+---
+
+## 3. Navigation Rules (Mandatory)
+
+- No `NavigationLink`
+- No navigation logic inside Views
+- Views emit **events only**
+- ViewModels send **navigation intents** to Router via protocols
+- Router owns:
+  - navigation state
+  - modal/popup presentation
+  - transitions and animations
+
+---
+
+## 4. Mocked Services (Mandatory)
+
+All services must:
+- Be protocol-based
+- Live in the Domain as abstractions
+- Have mock implementations in Data
+- Use async/await
+- Simulate realistic delays (300–800 ms)
+
+Required mock services:
+- AuthenticationService
+- DeviceConnectionService
+- MeasurementService
+- UserSessionStore
+
+---
+
+## 5. Screens & Detailed Functional Specification
+
+### 1) Login Screen
+
+#### UI
+- Two text fields:
+  - Email
+  - Password (secure)
+- Buttons:
+  - **Log in**
+  - **Register**
+  - **Forgot password?**
+
+#### Behavior
+- `Log in`
+  - Calls mocked AuthenticationService
+  - On success → navigate to **Main (Device is not connected)**
+- `Register`
+  - Navigate to **Register**
+- `Forgot password?`
+  - Navigate to **Forgot Password**
+
+#### States
+- Idle
+- Loading (disable buttons, show loader)
+- Error (inline error text)
+
+---
+
+### 2) Register Screen
+
+#### UI
+- Email text field
+- Password text field
+- **Register** button
+
+#### Behavior
+- Register button:
+  - Calls mocked AuthenticationService
+  - On success → navigate to **Main (Device is not connected)**
+
+#### Navigation
+- Back navigation handled by Router
+
+---
+
+### 3) Forgot Password Screen
+
+#### UI
+- Email text field
+- **Restore password** button
+
+#### Behavior
+- Restore password:
+  - Calls mocked AuthenticationService
+  - Always succeeds
+  - Navigate back to **Login**
+
+---
+
+### 4) Main Screen
+
+The Main screen has **two internal states**.
+
+---
+
+#### 4.1 Device Is Not Connected
+
+##### UI
+- Status text: *Device not connected*
+- **Pair with device** button
+- Navigation bar:
+  - Settings icon button
+
+##### Behavior
+- `Pair with device`
+  - Calls mocked DeviceConnectionService
+  - Switches state to **Device is connected**
+
+---
+
+#### 4.2 Device Is Connected
+
+##### UI
+- Status text: *Device connected*
+- **Start new measurement** button
+- List of previous measurements
+- Navigation bar:
+  - Settings icon button
+
+##### Measurement List
+- Each item shows:
+  - Measurement value(s)
+  - Timestamp
+- Tapping an item:
+  - Navigate to **Saved Measurement**
+
+##### Behavior
+- `Start new measurement`
+  - Navigate to **New Measurement**
+
+---
+
+### Settings Popup (Modal)
+
+#### Presentation
+- Appears as a popup/modal over Main screen
+- Smooth animation:
+  - Fade + scale or slide from bottom
+- Background dimmed
+
+#### UI
+- User email
+- **Export** button (no action)
+- **Logout** button
+
+#### Behavior
+- Logout:
+  - Clears UserSessionStore
+  - Navigate to **Login**
+- Export:
+  - Does nothing (stub)
+
+---
+
+### 5) New Measurement Screen
+
+#### UI
+- Live measurement values (simulated)
+- Comment text field
+- **Save measurement** button
+
+#### Behavior
+- Measurement values:
+  - Generated by mocked MeasurementService
+  - Update periodically while screen is visible
+- Save measurement:
+  - Saves via mocked service
+  - Navigate back to **Main (Device is connected)**
+
+---
+
+### 6) Saved Measurement Screen
+
+#### UI
+- Measurement values
+- Comment text
+- **Export measurement** button
+
+#### Behavior
+- Export measurement:
+  - No action (stub)
+- Back navigation handled by Router
+
+---
+
+## 6. Domain Models
+
+### User
+- id
+- email
+
+### Measurement
+- id
+- timestamp
+- values (array or structured model)
+- comment
+
+### DeviceConnectionState
+- notConnected
+- connected
+
+---
+
+## 7. Required Use Cases
+
+- LoginUseCase
+- RegisterUseCase
+- RestorePasswordUseCase
+- LogoutUseCase
+- GetCurrentUserUseCase
+- PairDeviceUseCase
+- GetMeasurementsUseCase
+- StartMeasurementUseCase
+- SaveMeasurementUseCase
+
+---
+
+## 8. Animations & Transitions
+
+- All screen transitions are Router-controlled
+- Settings popup must:
+  - Animate in/out smoothly
+  - Block interaction behind it
+- Loading states:
+  - Use subtle progress indicators
+  - Match provided design
+
+---
+
+## 9. Folder Structure (Required)
+
+## 11. Goal
+
+Produce a pixel-perfect, architecturally clean, fully navigable SwiftUI app that:
+    •    Matches provided designs exactly
+    •    Uses mocked services everywhere
+    •    Can be extended later with real backend services
+    •    Is suitable for senior-level code review
