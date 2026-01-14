@@ -8,15 +8,12 @@ struct LoginView: View {
             Spacer()
 
             VStack(spacing: 12) {
-                Image("bilpoolen_logo")
+                Image("login_logo")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 170)
                     .padding(.bottom, 10)
 
-                Text("Bilpoolen.nu")
-                    .font(AppFonts.title(20))
-                    .foregroundStyle(AppColors.navy)
             }
 
             VStack(alignment: .leading, spacing: 8) {
