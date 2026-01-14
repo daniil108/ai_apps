@@ -150,7 +150,7 @@ FeatureModule
 - Emits navigation intent via Router protocol
 
 Responsibilities:
-- Handle UI events (`onAppear`, `buttonTapped`)
+- Handle UI events (`task`, `buttonTapped`)
 - Call UseCases
 - Update UI state
 - Notify Router
@@ -179,7 +179,7 @@ There must be:
 
 ---
 
-## 7. Networking
+## 7. Networking (If needed)
 
 ### Async/Await Network Layer
 
@@ -260,23 +260,3 @@ You may extend it, but must not break layering.
 /Modules
 /
 /Common
----
-
-## 11. Output Format (mandatory)
-
-Rules:
-    •    No markdown explanations
-    •    No prose
-    •    No comments outside code
-    •    No TODO placeholders without structure
-    •    Realistic, senior-level naming and structure
-    
-## 12. Goal
-
-The result should be a production-quality architectural skeleton suitable for:
-    •    Senior iOS interviews
-    •    Large-scale apps
-    •    Long-term maintainability
-    •    Team development
-
-Generate the full structure and code accordingly.
