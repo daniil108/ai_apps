@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct StartingLocationView: View {
-    @ObservedObject var viewModel: StartingLocationViewModel
+    @StateObject private var viewModel: StartingLocationViewModel
+
+    init(viewModel: StartingLocationViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         VStack(spacing: 16) {

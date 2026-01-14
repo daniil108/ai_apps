@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct LanguageSheetView: View {
-    @ObservedObject var viewModel: LanguageSheetViewModel
+    @StateObject private var viewModel: LanguageSheetViewModel
+
+    init(viewModel: LanguageSheetViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {

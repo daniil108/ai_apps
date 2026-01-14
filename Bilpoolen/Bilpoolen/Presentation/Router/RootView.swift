@@ -10,6 +10,11 @@ struct RootView: View {
                     router.destination(for: route)
                 }
         }
+        .sheet(item: $router.activeModal) { modal in
+            NavigationStack {
+                router.modalView(for: modal)
+            }
+        }
         .overlay {
             BottomSheet(isPresented: Binding(
                 get: { router.activeSheet != nil },

@@ -35,9 +35,33 @@ final class RootRouter: ObservableObject, LoginRouting, NewBookingRouting, MyBoo
         }
     }
 
+    enum Modal: Identifiable {
+        case filters
+        case carDetails(Car)
+        case unlockCar(Booking)
+        case lockCar(Booking)
+        case upcomingBooking(Booking)
+
+        var id: String {
+            switch self {
+            case .filters:
+                return "filters"
+            case .carDetails(let car):
+                return "carDetails-\(car.id.uuidString)"
+            case .unlockCar(let booking):
+                return "unlockCar-\(booking.id.uuidString)"
+            case .lockCar(let booking):
+                return "lockCar-\(booking.id.uuidString)"
+            case .upcomingBooking(let booking):
+                return "upcomingBooking-\(booking.id.uuidString)"
+            }
+        }
+    }
+
     @Published var root: Root = .login
     @Published var path = NavigationPath()
     @Published var activeSheet: Sheet?
+    @Published var activeModal: Modal?
 
     let container: AppContainer
     private let mainViewModel = MainViewModel()
@@ -95,8 +119,24 @@ final class RootRouter: ObservableObject, LoginRouting, NewBookingRouting, MyBoo
         }
     }
 
+    @ViewBuilder
+    func modalView(for modal: Modal) -> some View {
+        switch modal {
+        case .filters:
+            FiltersModuleBuilder(container: container).build()
+        case .carDetails(let car):
+            CarDetailsModuleBuilder(container: container).build(car: car, router: self)
+        case .unlockCar(let booking):
+            UnlockCarModuleBuilder(container: container).build(booking: booking, router: self)
+        case .lockCar(let booking):
+            LockCarModuleBuilder(container: container).build(booking: booking)
+        case .upcomingBooking(let booking):
+            UpcomingBookingModuleBuilder(container: container).build(booking: booking)
+        }
+    }
+
     func showFilters() {
-        path.append(Route.filters)
+        activeModal = .filters
     }
 
     func showMap() {
@@ -104,19 +144,19 @@ final class RootRouter: ObservableObject, LoginRouting, NewBookingRouting, MyBoo
     }
 
     func showCarDetails(car: Car) {
-        path.append(Route.carDetails(car))
+        activeModal = .carDetails(car)
     }
 
     func showUnlockCar(booking: Booking) {
-        path.append(Route.unlockCar(booking))
+        activeModal = .unlockCar(booking)
     }
 
     func showLockCar(booking: Booking) {
-        path.append(Route.lockCar(booking))
+        activeModal = .lockCar(booking)
     }
 
     func showUpcomingBooking(booking: Booking) {
-        path.append(Route.upcomingBooking(booking))
+        activeModal = .upcomingBooking(booking)
     }
 
     func showLanguageSheet() {

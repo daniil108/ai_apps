@@ -9,10 +9,11 @@ struct UpcomingBookingView: View {
                 CardView {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 12) {
-                            Image(systemName: "car.fill")
-                                .font(.system(size: 32))
-                                .foregroundStyle(AppColors.navy)
+                            Image("car")
+                                .resizable()
+                                .scaledToFill()
                                 .frame(width: 64, height: 44)
+                                .padding(4)
                                 .background(AppColors.lightGray)
                                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 

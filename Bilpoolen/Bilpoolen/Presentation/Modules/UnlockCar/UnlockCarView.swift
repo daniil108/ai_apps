@@ -1,17 +1,22 @@
 import SwiftUI
 
 struct UnlockCarView: View {
-    @ObservedObject var viewModel: UnlockCarViewModel
+    @StateObject private var viewModel: UnlockCarViewModel
+
+    init(viewModel: UnlockCarViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         VStack(spacing: 20) {
             CardView {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 12) {
-                        Image(systemName: "car.fill")
-                            .font(.system(size: 36))
-                            .foregroundStyle(AppColors.navy)
+                        Image("car")
+                            .resizable()
+                            .scaledToFill()
                             .frame(width: 64, height: 44)
+                            .padding(4)
                             .background(AppColors.lightGray)
                             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 

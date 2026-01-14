@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct MapView: View {
-    @ObservedObject var viewModel: MapViewModel
+    @StateObject private var viewModel: MapViewModel
+
+    init(viewModel: MapViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ScrollView {
@@ -36,10 +40,11 @@ struct MapView: View {
                         Button(action: { viewModel.carTapped(car) }) {
                             CardView {
                                 HStack(spacing: 12) {
-                                    Image(systemName: "car.fill")
-                                        .font(.system(size: 26))
-                                        .foregroundStyle(AppColors.navy)
+                                    Image("car")
+                                        .resizable()
+                                        .scaledToFill()
                                         .frame(width: 50, height: 38)
+                                        .padding(4)
                                         .background(AppColors.lightGray)
                                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                                     VStack(alignment: .leading, spacing: 4) {

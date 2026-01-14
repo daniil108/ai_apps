@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct NewBookingView: View {
-    @ObservedObject var viewModel: NewBookingViewModel
+    @StateObject private var viewModel: NewBookingViewModel
+
+    init(viewModel: NewBookingViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ScrollView {
@@ -14,10 +18,11 @@ struct NewBookingView: View {
                     CardView {
                         VStack(alignment: .leading, spacing: 12) {
                             HStack(alignment: .top, spacing: 12) {
-                                Image(systemName: "car.fill")
-                                    .font(.system(size: 36))
-                                    .foregroundStyle(AppColors.navy)
+                                Image("car")
+                                    .resizable()
+                                    .scaledToFill()
                                     .frame(width: 64, height: 44)
+                                    .padding(4)
                                     .background(AppColors.lightGray)
                                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 
@@ -89,10 +94,11 @@ struct NewBookingView: View {
                             Button(action: { viewModel.carTapped(car) }) {
                                 CardView {
                                     HStack(spacing: 12) {
-                                        Image(systemName: "car.fill")
-                                            .font(.system(size: 28))
-                                            .foregroundStyle(AppColors.navy)
+                                        Image("car")
+                                            .resizable()
+                                            .scaledToFill()
                                             .frame(width: 52, height: 40)
+                                            .padding(4)
                                             .background(AppColors.lightGray)
                                             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 

@@ -8,10 +8,12 @@ struct CarDetailsView: View {
             VStack(alignment: .leading, spacing: 16) {
                 CardView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Image(systemName: "car.fill")
-                            .font(.system(size: 40))
-                            .foregroundStyle(AppColors.navy)
-                            .frame(width: 72, height: 56)
+                        Image("car")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 160)
+                            .clipped()
                             .background(AppColors.lightGray)
                             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 

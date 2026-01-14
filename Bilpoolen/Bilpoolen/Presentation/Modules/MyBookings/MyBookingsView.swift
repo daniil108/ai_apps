@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct MyBookingsView: View {
-    @ObservedObject var viewModel: MyBookingsViewModel
+    @StateObject private var viewModel: MyBookingsViewModel
+
+    init(viewModel: MyBookingsViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ScrollView {
@@ -48,10 +52,11 @@ private struct BookingRowView: View {
     var body: some View {
         CardView {
             HStack(spacing: 12) {
-                Image(systemName: "car.fill")
-                    .font(.system(size: 28))
-                    .foregroundStyle(AppColors.navy)
+                Image("car")
+                    .resizable()
+                    .scaledToFill()
                     .frame(width: 52, height: 40)
+                    .padding(4)
                     .background(AppColors.lightGray)
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 
