@@ -30,6 +30,7 @@ struct MyBookingsView: View {
                 }
             }
             .padding(16)
+            .padding(.bottom, 90)
         }
         .background(AppColors.lightGray.ignoresSafeArea())
         .appNavigationTitle("My Bookings")

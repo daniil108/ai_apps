@@ -40,6 +40,7 @@ final class RootRouter: ObservableObject, LoginRouting, NewBookingRouting, MyBoo
     @Published var activeSheet: Sheet?
 
     let container: AppContainer
+    private let mainViewModel = MainViewModel()
 
     init(container: AppContainer) {
         self.container = container
@@ -50,7 +51,7 @@ final class RootRouter: ObservableObject, LoginRouting, NewBookingRouting, MyBoo
         case .login:
             return AnyView(LoginModuleBuilder(container: container).build(router: self))
         case .main:
-            return AnyView(MainModuleBuilder(container: container).build(router: self))
+            return AnyView(MainModuleBuilder(container: container).build(router: self, viewModel: mainViewModel))
         }
     }
 
